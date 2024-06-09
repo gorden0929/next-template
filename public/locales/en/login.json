@@ -1,0 +1,9 @@
+{
+  "h1": "Login",
+  "label": {
+    "username": "Username",
+    "password": "Password",
+    "remember": "Remember me",
+    "login": "Login"
+  }
+}

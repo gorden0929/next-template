@@ -1,0 +1,9 @@
+{
+  "h1": "登录",
+  "label": {
+    "username": "用户名",
+    "password": "密码",
+    "remember": "记住我",
+    "login": "登录"
+  }
+}
