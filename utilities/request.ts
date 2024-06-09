@@ -1,26 +1,66 @@
-import { APIPaths } from '@/configs/api';
-import { debugPrint } from './utilities';
+import { APIPaths } from "@/configs/api";
+import { debugPrint } from "./utilities";
 
-const post = async (target: string, body?: any, contentType: string = 'application/json') => {
-  const requestOptions: RequestInit = {
-    method: 'POST',
-    headers: {
-      'Content-Type': contentType,
-    },
-    body: JSON.stringify(body),
+const callAPI = async (
+  target: string,
+  method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE" = "GET",
+  body?: any,
+  auth: boolean = false,
+  contentType: string = "application/json",
+  responseType: "json" | "text" | "blob" = "json",
+) => {
+  const headers: any = {};
+  if (contentType) headers["Content-Type"] = contentType;
+  if (auth)
+    headers["Authorization"] = "Bearer " + localStorage.getItem("token");
+
+  const requestOptions: any = {
+    method: method,
+    headers: headers,
   };
-  return await callAPI(target, requestOptions);
+
+  if (body) requestOptions.body = JSON.stringify(body);
+
+  try {
+    const result = await fetch(target, requestOptions);
+    if (responseType === "json") {
+      return result.json();
+    } else if (responseType === "text") {
+      return result.text();
+    } else if (responseType === "blob") {
+      return result.blob();
+    }
+    return result;
+  } catch (error) {
+    debugPrint(error);
+    return error;
+  }
 };
 
-const get = async (target: string, query?: any) => {
-  const requestOptions: RequestInit = {
-    method: 'GET',
-  };
-  return await callAPI(target, requestOptions);
-};
+const constructTarget = (
+  path: APIPaths,
+  params?: string | string[],
+  query?: Record<string, any> | string,
+) => {
+  let target = APIPaths.apiEndPoint + path;
 
-const callAPI = (url: string, request: RequestInit) => {
-  return fetch(url, request);
+  if (params) {
+    if (typeof params === "string") {
+      target = `${target}/${params}`;
+    } else if (Array.isArray(params)) {
+      target = `${target}/${params.join("/")}`;
+    }
+  }
+
+  if (query) {
+    if (typeof query === "string") {
+      target = `${target}?${query}`;
+    } else if (typeof query === "object") {
+      target = `${target}?${new URLSearchParams(query).toString()}`;
+    }
+  }
+
+  return target;
 };
 
 // async function callAPI(body, target, defaultReturn) {
@@ -54,13 +94,32 @@ const callAPI = (url: string, request: RequestInit) => {
 //   }
 // }
 
-export async function login() {
-  const target = APIPaths.apiEndPoint + APIPaths.login;
-
-  return await post(target);
-}
+export const login = (username: string, password: string) => {
+  return callAPI(constructTarget(APIPaths.login), "POST", {
+    username,
+    password,
+  });
+};
 
 export async function testGet() {
-  const target = APIPaths.apiEndPoint + APIPaths.test + '/asd?q=asd';
-  return await get(target, {});
+  return callAPI(constructTarget(APIPaths.test, "test", { abc: 1 }), "GET");
+}
+export async function testPost() {
+  return callAPI(
+    constructTarget(APIPaths.test, undefined, { abc: 1 }),
+    "POST",
+    { abc: 1 },
+  );
+}
+export async function testPut() {
+  return callAPI(constructTarget(APIPaths.test), "PUT", { put: 1 });
+}
+export async function testPatch() {
+  return callAPI(constructTarget(APIPaths.test), "PATCH", { patch: 1 });
+}
+export async function testDelete() {
+  return callAPI(
+    constructTarget(APIPaths.test, undefined, { delete: 1 }),
+    "DELETE",
+  );
 }

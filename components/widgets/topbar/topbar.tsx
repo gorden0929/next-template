@@ -1,23 +1,23 @@
-import type { FC } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import styles from './topbar.module.scss';
-import { Button } from '@/components/ui/button';
+import type { FC } from "react";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import styles from "./topbar.module.scss";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { SunIcon, MoonIcon, LogOut } from 'lucide-react';
-import { useTheme } from 'next-themes';
-import { Alert } from '../alert/alert';
-import { languages } from '@/utilities/utilities';
+} from "@/components/ui/dropdown-menu";
+import { SunIcon, MoonIcon, LogOut } from "lucide-react";
+import { useTheme } from "next-themes";
+import { Alert } from "../alert/alert";
+import { languages } from "@/utilities/utilities";
 
 const navPath: any = {
-  home: '/',
-  about: '/about',
-  login: '/login',
+  home: "/",
+  about: "/about",
+  login: "/login",
 };
 
 type Props = {
@@ -45,13 +45,19 @@ const Topbar: FC<Props> = (props) => {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" size="icon">
-              {languages.find((language) => language.isoCode === locale)?.shortLabel}
+              {
+                languages.find((language) => language.isoCode === locale)
+                  ?.shortLabel
+              }
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             {languages.map((language) => (
               <DropdownMenuItem key={language.isoCode} asChild>
-                <Link href={{ pathname, query }} locale={language.isoCode} as={asPath}>
+                <Link
+                  href={{ pathname, query }}
+                  locale={language.isoCode}
+                  as={asPath}>
                   {language.label}
                 </Link>
               </DropdownMenuItem>
@@ -67,12 +73,20 @@ const Topbar: FC<Props> = (props) => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => setTheme('light')}>Light</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setTheme('dark')}>Dark</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setTheme('system')}>System</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setTheme("light")}>
+              Light
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setTheme("dark")}>
+              Dark
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setTheme("system")}>
+              System
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-        <Alert description="Are you sure you want to logout?" confirm={() => console.log('logout')}>
+        <Alert
+          description="Are you sure you want to logout?"
+          confirm={() => console.log("logout")}>
           <Button variant="outline" size="icon">
             <LogOut className="h-[1.2rem] w-[1.2rem]" />
           </Button>

@@ -1,16 +1,13 @@
-import { GetServerSideProps } from 'next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-
 export const languages = [
   {
-    shortLabel: 'EN',
-    label: 'English',
-    isoCode: 'en',
+    shortLabel: "EN",
+    label: "English",
+    isoCode: "en",
   },
   {
-    shortLabel: '中',
-    label: '中文',
-    isoCode: 'zh-CN',
+    shortLabel: "中",
+    label: "中文",
+    isoCode: "zh-CN",
   },
 ];
 
@@ -21,5 +18,5 @@ export function debugPrint(...args: any) {
 }
 
 export function isDebug() {
-  return !process.env.NODE_ENV || process.env.NODE_ENV === 'development';
+  return !process.env.NODE_ENV || process.env.NODE_ENV === "development";
 }

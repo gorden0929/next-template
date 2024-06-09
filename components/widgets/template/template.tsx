@@ -1,8 +1,12 @@
-import styles from './template.module.scss';
-import { useTranslation } from 'next-i18next';
+import { FC } from "react";
+import styles from "./template.module.scss";
 
-const Template = ({ children }: { children: React.ReactNode }) => {
-  // const { t, i18n, ready } = useTranslation('common');
+type Props = {
+  children: React.ReactNode;
+};
+
+const Template: FC<Props> = ({ children }) => {
   return <div>{children}</div>;
 };
+
 export default Template;
