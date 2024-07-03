@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, Suspense, useEffect, useState } from "react";
 import Topbar from "../topbar/topbar";
 import styles from "./page-wrapper.module.scss";
 import { EventBus, HideLoading } from "@/utilities/eventBus";
@@ -16,15 +16,15 @@ const PageWrapper: FC<Props> = ({ children, logo, navigation }) => {
   let eventBusInitialized = false;
   // const resizeObserver = null;
 
-  const [showLoading, setShowLoading] = useState(true);
+  const [showLoading, setShowLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState("");
   const [dialogPack, setDialogPack] = useState<any>(null);
 
   useEffect(() => {
     initiateEventBus();
-    setTimeout(() => {
-      HideLoading();
-    }, 1000);
+    // setTimeout(() => {
+    //   HideLoading();
+    // }, 1000);
     return () => {
       EventBus.remove("loading", initLoading);
       EventBus.remove("dialog", initDialog);
